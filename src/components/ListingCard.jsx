@@ -2,6 +2,7 @@
 import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
 import "../styles/ListingCard.scss";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ListingCard = ({
         listingId,
@@ -12,7 +13,11 @@ const ListingCard = ({
         country,
         category,
         type,
-        price
+        price,
+        startDate,
+        endDate,
+        totalPrice,
+        booking
     }) => {
 
     /* SLIDER FOR IMAGES */
@@ -26,8 +31,15 @@ const ListingCard = ({
         setCurrentIndex((prevIndex) => (prevIndex + 1) % listingPhotoPaths.length)
     }
 
+    const navigate = useNavigate();
+
   return (
-    <div className="listing-card">
+    <div
+        className="listing-card"
+        onClick={() => {
+            navigate(`/properties/${listingId}`);
+        }}
+    >
         <div className="slider-container">
             <div className="slider" style={{ transform: `translateX(-${currentIndex * 100}%)`}}>
                 {listingPhotoPaths?.map((photo, index) => (
@@ -38,13 +50,19 @@ const ListingCard = ({
                         />
                         <div
                             className="prev-button"
-                            onClick={(e) => (goToPrevSlide(e))}
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                goToPrevSlide(e)
+                            }}
                         >
                             <MdArrowBackIosNew sx={{ fontSize: "15px" }} />
                         </div>
                         <div
                             className="next-button"
-                            onClick={(e) => (goToNextSlide(e))}
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                goToNextSlide(e)
+                            }}
                         >
                             <MdArrowForwardIos sx={{ fontSize: "15px" }} />
                         </div>
@@ -55,8 +73,18 @@ const ListingCard = ({
 
         <h3 className="">{city}, {province}, {country}</h3>
         <p>{category}</p>
-        <p>{type}</p>
-        <p><span>${price} per night</span></p>
+        {!booking ? (
+            <>
+                <p>{type}</p>
+                <p><span>${price} per night</span></p>
+            </>
+        ) : (
+            <>
+                <p>{startDate} - {endDate}</p>
+                <p><span>${totalPrice} total</span></p>
+            </>
+        )}
+        
     </div>
   );
 };
