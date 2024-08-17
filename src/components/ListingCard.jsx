@@ -1,8 +1,11 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
+// import { MdArrowBackIosNew, MdArrowForwardIos, MdFavorite } from "react-icons/md";
+import { ArrowBackIosNew, ArrowForwardIos, Favorite } from "@mui/icons-material";
 import "../styles/ListingCard.scss";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setWishList } from "../redux/state";
 
 const ListingCard = ({
         listingId,
@@ -32,6 +35,32 @@ const ListingCard = ({
     }
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    /* ADD TO WISHLIST */
+    const user = useSelector((state) => state.user);
+    const wishList = user?.wishList || [];
+
+    const isLiked = wishList.find((item) => item?._id === listingId);
+
+    const patchWishList = async () => {
+        if(user?._id !== creator._id){
+            const response = await fetch(
+                `http://localhost:3001/users/${user?._id}/${listingId}`,
+                {
+                  method: "PATCH",
+                  header: {
+                    "Content-Type": "application/json",
+                  },
+                }
+            );
+            const data = await response.json();
+            dispatch(setWishList(data.wishList));
+        } else {
+            return;
+        }
+
+    };
 
   return (
     <div
@@ -55,7 +84,7 @@ const ListingCard = ({
                                 goToPrevSlide(e)
                             }}
                         >
-                            <MdArrowBackIosNew sx={{ fontSize: "15px" }} />
+                            <ArrowBackIosNew sx={{ fontSize: "15px" }} />
                         </div>
                         <div
                             className="next-button"
@@ -64,7 +93,7 @@ const ListingCard = ({
                                 goToNextSlide(e)
                             }}
                         >
-                            <MdArrowForwardIos sx={{ fontSize: "15px" }} />
+                            <ArrowForwardIos sx={{ fontSize: "15px" }} />
                         </div>
                     </div>
                 ))}
@@ -84,7 +113,23 @@ const ListingCard = ({
                 <p><span>${totalPrice} total</span></p>
             </>
         )}
-        
+
+        <button
+            className="favorite"
+            onClick={(e) => {
+                e.stopPropagation();
+                patchWishList()
+                console.log("Clickado")
+            }}
+            disabled={!user}
+        >
+            {isLiked ? (
+                <Favorite sx={{ color: "red" }} />
+            ) : (
+                <Favorite sx={{ color: "white" }} />
+            )}
+        </button>
+
     </div>
   );
 };
