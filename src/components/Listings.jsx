@@ -38,7 +38,7 @@ const Listings = () => {
         getFeedListings()
     }, [selectedCategory])
 
-    console.log(listings, 'LISTINGS')
+    // console.log(listings, 'LISTINGS')
 
   return (
     <>

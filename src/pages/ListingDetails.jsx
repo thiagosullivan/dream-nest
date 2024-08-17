@@ -17,7 +17,7 @@ const ListingDetails = () => {
 
     const [listing, setListing] = useState(null);
 
-    console.log(listing, 'LISTINGS DETAILS')
+    // console.log(listing, 'LISTINGS DETAILS')
 
     const getListingDetails = async () => {
         try {
