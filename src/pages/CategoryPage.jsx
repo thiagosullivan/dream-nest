@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setListings } from "../redux/state";
 import ListingCard from "../components/ListingCard";
+import Footer from "../components/Footer";
 
 const CategoryPage = () => {
     const [loading, setLoading] = useState(true)
@@ -35,33 +36,35 @@ const CategoryPage = () => {
 
     useEffect(() => {
         getFeedListings()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [category])
     
   return loading ? <Loader /> : (
     <>
         <Navbar />
         <h1 className="title-list">{category} listings</h1>
-            <div className="list">
-                {listings.length <= 0 && (
-                    <div>
-                        <p>You don't have any place liked yet!</p>
-                    </div>
-                )}
-                {listings?.map(({_id, creator, listingPhotoPaths, city, province, country, category, type, price, booking = false}) => (
-                    <ListingCard
-                        listingId={_id}
-                        creator={creator}
-                        listingPhotoPaths={listingPhotoPaths}
-                        city={city}
-                        province={province}
-                        country={country}
-                        category={category}
-                        type={type}
-                        price={price}
-                        booking={booking}              
-                    />
-                ))}
-            </div>
+        <div className="list">
+            {listings.length <= 0 && (
+                <div>
+                    <p>You don't have any place liked yet!</p>
+                </div>
+            )}
+            {listings?.map(({_id, creator, listingPhotoPaths, city, province, country, category, type, price, booking = false}) => (
+                <ListingCard
+                    listingId={_id}
+                    creator={creator}
+                    listingPhotoPaths={listingPhotoPaths}
+                    city={city}
+                    province={province}
+                    country={country}
+                    category={category}
+                    type={type}
+                    price={price}
+                    booking={booking}              
+                />
+            ))}
+        </div>
+        <Footer />
     </>
   )
 }

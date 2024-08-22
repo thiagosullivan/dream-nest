@@ -5,6 +5,7 @@ import ListingCard from "../components/ListingCard";
 import { useEffect, useState } from "react";
 import { setPropertyList } from "../redux/state";
 import Loader from "../components/Loader";
+import Footer from "../components/Footer";
 
 const PropertyList = () => {
   const [loading, setLoading] = useState(true)
@@ -29,6 +30,7 @@ const PropertyList = () => {
 
   useEffect(() => {
     getPropertyList()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return loading ? <Loader /> : (
@@ -56,6 +58,7 @@ const PropertyList = () => {
                 />
             ))}
         </div>
+        <Footer />
     </>
   )
 }

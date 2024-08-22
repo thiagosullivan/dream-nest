@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ListingCard from "../components/ListingCard";
 import { setListings } from "../redux/state";
 import { useEffect, useState } from "react";
+import Footer from "../components/Footer";
 
 const SearchPage = () => {
     const [loading, setLoading] = useState(true)
@@ -30,6 +31,7 @@ const SearchPage = () => {
 
     useEffect(() => {
         getSearchListings()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search])
     
     return loading ? <Loader /> : (
@@ -57,6 +59,7 @@ const SearchPage = () => {
                     />
                 ))}
             </div>
+            <Footer />
         </>
     )
 }
